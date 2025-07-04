@@ -40,7 +40,7 @@ export const addProductToCart = async (req, res) => {
     console.log("Adding product with ID:", productId);
 
     if (!productId) {
-      return res.status(400).json({ error: "Please Refresh Before" });
+      return res.status(400).json({ error: "Didn't recieved product id ,Please Refresh!" });
     }
 
     // Assuming there's only one cart in the system (find the first one)

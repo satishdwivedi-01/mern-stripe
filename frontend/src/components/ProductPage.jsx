@@ -6,6 +6,17 @@ const ProductPage = () => {
   const navigate = useNavigate()
   const [products, setProducts] = useState([]);
 
+  const fetchProducts = async () => {
+    const response = await axios.get(
+      "http://localhost:3000/getAllProducts"
+    ); // Replace with your backend URL
+    console.log("fetched products : ", response.data);
+    setProducts(response.data);
+    if (response.data.length < 1) {
+      createDummyProductsAndCart();
+    }
+  };
+
   // Create 10 dummy products and post them to the backend
   const createDummyProductsAndCart = async () => {
     const dummyProducts = [];
@@ -30,25 +41,18 @@ const ProductPage = () => {
 
       console.log("New cart created:", response.data);
       setProducts(dummyProducts); // Set the dummy products in the state once they are created successfully
-      console.log("Dummy products and Cart created successfully");
+      fetchProducts();
+      console.log("Dummy products and Cart created successfully : ", dummyProducts);
     } catch (err) {
       console.error("Error creating products:", err.message);
     }
   };
 
+  
+
   useEffect(() => {
     // Fetch products only after dummy products are created and set
     if (products.length === 0) {
-      const fetchProducts = async () => {
-        const response = await axios.get(
-          "http://localhost:3000/getAllProducts"
-        ); // Replace with your backend URL
-        console.log(response.data);
-        setProducts(response.data);
-        if (response.data.length < 1) {
-          createDummyProductsAndCart();
-        }
-      };
       fetchProducts();
     }
   }, [products]);
